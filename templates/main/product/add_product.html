@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for item in product %}
+        <input placeholder="{{ item[1] }}" name="{{ item[0] }}"><br>
+    {% endfor %}
+    <input type="submit">
+
+    <script type="text/javascript"  charset="utf-8" src="../../../static/js/is_auth.js"></script>
+</body>
+</html>

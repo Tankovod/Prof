@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+<form method="POST" action="/api/auth/registration">
+    <input name="phone", placeholder="Номер телефона" id="phone">{% if 'phone' in exception %} {{ exception[1] }} {% endif %}<br>
+    <input name="first_name", placeholder="Имя" id="first_name">{% if 'first_name' in exception %} {{ exception[1] }} {% endif %} <br>
+    <input name="last_name", placeholder="Фамилия" id="last_name">{% if 'last_name' in exception %} {{ exception[1] }} {% endif %} <br>
+    <input name="email", placeholder="Email" id="email">{% if 'email' in exception %} {{ exception[1] }} {% endif %} <br>
+    <input name="password", placeholder="Пароль" id="password"> {% if 'password' in exception %} {{ exception[1] }} {% endif %} <br>
+    <input type="submit" id="sign_up">
+</form>
+
+
+<script type="text/javascript"  charset="utf-8" src="../../../static/js/auth_sign_up.js"></script>
+</body>
+</html>
