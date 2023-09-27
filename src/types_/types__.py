@@ -6,7 +6,7 @@ class User(BaseModel):
     email: EmailStr
     first_name: Optional[str] = Field(..., max_length=32)
     last_name: Optional[str] = Field(..., max_length=32)
-    phone: str = Field(..., min_length=9, max_length=13, pattern="[0-9]$")
+    phone: str = Field(..., min_length=9, max_length=13, pattern="[+0-9]$")
     password: str = Field(
         ...,
         min_length=8,
@@ -20,6 +20,18 @@ class User(BaseModel):
 
 class UserInDB(User):
     hashed_password: str
+
+
+class ProductValid(BaseModel):
+    title: str
+    description: str
+    amount: int
+    units: str
+
+
+class LoginData(BaseModel):
+    phone: str
+    password: str
 
 
 class Token(BaseModel):

@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+
+<!-- Navigation-->
+{% include 'main/page_parts/navigation.html' %}
+
+
+<!-- Page Header-->
+{% include 'main/page_parts/header.html'%}
+<!-- Section-->
+
+{% include 'main/page_parts/product-list.html' %}
+<!-- Page Footer-->
+{% include 'main/page_parts/footer.html' %}
+
+{% endblock %}

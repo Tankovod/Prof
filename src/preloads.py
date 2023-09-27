@@ -1,5 +1,5 @@
 import asyncio
-from src.database.models import UserSite
+from src.database.models import UserSite, Product
 from ulid import ulid
 from src.utils.jwt_auth import get_password_hash
 from src.types_.types__ import User
@@ -12,5 +12,8 @@ async def async_main():
                                    phone='+348362497234798', disabled=False, first_name=None, last_name=None).model_dump())
             session.add(user)
 
-
-asyncio.run(async_main())
+# async def async__f():
+#     async with Product.async_session() as session:
+#         async with session.begin():
+#             product = Product()
+# asyncio.run(async_main())

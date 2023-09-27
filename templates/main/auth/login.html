@@ -1,17 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>-->
+<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="../../../static/css/bs_style.css" rel="stylesheet" />
+  <link href="../../../static/css/login_style.css" rel="stylesheet" type="text/css">
+<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+   <meta charset="UTF-8">
+    <title>Вход в аккаунт</title>
 </head>
 <body>
-<form method="post">
-  <input name="username" placeholder="Номер телефона" id="phone">
-  <input name="password" placeholder="Пароль" id="password">
-  <input type="submit" id="sign_in">
-</form>
-<button id="q">Показать контент 2</button>
+
+<!-- Navbar-->
+<header class="header">
+  <nav class="navbar navbar-expand-lg navbar-light py-3">
+    <div class="container">
+      <!-- Navbar Brand -->
+      <a href="#" class="navbar-brand">
+        <img src="https://bootstrapious.com/i/snippets/sn-registeration/logo.svg" alt="logo" width="150">
+      </a>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="row py-5 mt-4 align-items-center">
+    <!-- For Demo Purpose -->
+    <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
+      <img src="https://bootstrapious.com/i/snippets/sn-registeration/illustration.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
+      <h1>Вход в аккаунт</h1>
+      <p class="font-italic text-muted mb-0">Create a minimal registeration page using Bootstrap 4 HTML form elements.</p>
+      <p class="font-italic text-muted">Snippet By <a href="https://bootstrapious.com" class="text-muted">
+          <u>Bootstrapious</u></a>
+      </p>
+    </div>
+
+    <!-- Login Form -->
+    <div class="col-md-7 col-lg-6 ml-auto">
+      <form action="#">
+        <div class="row">
+
+
+          <!-- Phone Number -->
+          <div class="input-group col-lg-12 mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-white px-4 border-md border-right-0">
+                <i class="fa fa-phone-square text-muted"></i>
+              </span>
+            </div>
+            <select id="country_code" name="countryCode" style="max-width: 80px" class="custom-select form-control bg-white border-left-0 border-md h-100 font-weight-bold text-muted">
+              <option value="+375">+375</option>
+              <option value="+7">+7</option>
+<!--              <option value="">+15</option>-->
+<!--              <option value="">+18</option>-->
+            </select>
+            <input id="phone" type="tel" name="phone" placeholder="Телефон" class="form-control bg-white border-md border-left-0 pl-3">
+          </div>
+
+
+          <!-- Password -->
+          <div class="input-group col-lg-6 mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-white px-4 border-md border-right-0">
+                <i class="fa fa-lock text-muted"></i>
+              </span>
+            </div>
+            <input id="password" type="password" name="password" placeholder="Пароль" class="form-control bg-white border-left-0 border-md">
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group col-lg-12 mx-auto mb-0">
+            <a id="sign_in" href="#" class="btn btn-primary btn-block py-2">
+              <span class="font-weight-bold">Войти</span>
+            </a>
+          </div>
+
+
+          <!-- Divider Text -->
+          <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
+            <div class="border-bottom w-100 ml-5"></div>
+            <span class="px-2 small text-muted font-weight-bold text-muted">ИЛИ</span>
+            <div class="border-bottom w-100 mr-5"></div>
+          </div>
+
+          <!-- Social Login -->
+          <div class="form-group col-lg-12 mx-auto">
+            <a href="#" class="btn btn-primary btn-block py-2 btn-facebook">
+              <i class="fa fa-facebook-f mr-2"></i>
+              <span class="font-weight-bold">Continue with Facebook</span>
+            </a>
+            <a href="#" class="btn btn-primary btn-block py-2 btn-twitter">
+              <i class="fa fa-twitter mr-2"></i>
+              <span class="font-weight-bold">Войти через Twitter</span>
+            </a>
+          </div>
+
+          <!-- Already Registered -->
+          <div class="text-center w-100">
+            <p class="text-muted font-weight-bold">Нет аккаунта? <a href="/auth/registration" class="text-primary ml-2">Зарегистрироваться</a></p>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript"  charset="utf-8" src="../../../static/js/auth_sign_in.js"></script>
+<script>
+$(function () {
+    $('input, select').on('focus', function () {
+        $(this).parent().find('.input-group-text').css('border-color', '#80bdff');
+    });
+    $('input, select').on('blur', function () {
+        $(this).parent().find('.input-group-text').css('border-color', '#ced4da');
+    });
+});
+
+</script>
 </body>
+
 </html>

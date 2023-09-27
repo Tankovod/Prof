@@ -1,12 +1,14 @@
 from datetime import timedelta
-
+from src.settings import ACCESS_TOKEN_EXPIRE_MINUTES
 import sqlalchemy.exc
 import ulid
 from fastapi import APIRouter, Request, Form, BackgroundTasks, status
+from fastapi.responses import RedirectResponse
+from src.database.db_func import get_user
 from src.utils.jwt_auth import get_password_hash, token_check
 from src.database.models import UserSite
-from src.types_.types__ import User
-from src.utils.jwt_auth import create_access_token
+from src.types_.types__ import User, LoginData
+from src.utils.jwt_auth import create_access_token, verify_password
 
 router = APIRouter(prefix='/auth', tags=['Auth'])
 
@@ -23,8 +25,8 @@ async def save_user(form: UserSite):
              status_code=status.HTTP_201_CREATED,
              response_model_exclude={'password'},
              name="New user sign up")
-async def sign_up(
-        form: User):
+async def sign_up(form: User):
+    print(form.phone, form.password)
     user_id = ulid.ulid()
     form = UserSite(id=user_id, **form.model_dump())
     try:
@@ -34,13 +36,23 @@ async def sign_up(
         token, http_response = '', 401
     else:
         message = "Вы зарегистрированы!"
-        token = await create_access_token(data={"sub": user_id}, expires_delta=timedelta(minutes=2))
+        token = await create_access_token(data={"sub": user_id}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
         http_response = 201
 
     response = {'message': message, 'token': token, 'HTTP_response': http_response, **form.__dict__}
     return response
 
 
+@router.post(path="/login")
+async def sign_in(form: LoginData) -> dict:
+    current_user = await get_user(phone=form.phone)
+    if current_user and await verify_password(plain_password=form.password, hashed_password=current_user.password):
+        token = await create_access_token(data={"sub": current_user.id}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+        return {'token': token}
+    else:
+        return {'message': 'Неверный логин и(или) пароль'}
+
+
 @router.post(path="/token")
-async def validate_token(token: dict):
-    return await token_check(token=token['access_token'])
+async def validate_token(token: dict) -> None | int:
+    return await token_check(token=token['access_token'].split('=')[1])

@@ -1,4 +1,5 @@
 from fastapi import Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 from typing_extensions import Annotated
 from jose import JWTError, jwt
 from src.database.base import Base
@@ -11,7 +12,7 @@ from src.types_.settings import Settings
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-async def _get_db_session() -> Session:
+async def _get_db_session() -> AsyncSession:
     with Base.async_session() as session:
         yield session
 

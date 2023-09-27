@@ -7,10 +7,11 @@
 </head>
 <body>
     {% for item in product %}
-        <input placeholder="{{ item[1] }}" name="{{ item[0] }}"><br>
+        <input placeholder="{{ item[1] }}" id="{{ item[0] }}"><br>
     {% endfor %}
-    <input type="submit">
+    <button id="add_product">Сохранить</button>
 
+    <button id="logout">Выйти из профиля</button>
     <script type="text/javascript"  charset="utf-8" src="../../../static/js/is_auth.js"></script>
 </body>
 </html>

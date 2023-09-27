@@ -1,27 +1,28 @@
 const BASE_URL = 'http://127.0.0.1:8000'
 
 function saveToken(data){
-    console.log('token' + data)
-    localStorage.setItem('access_token', JSON.stringify(data))
+    // localStorage.setItem('access_token', JSON.stringify(data))
+    document.cookie=`access_token=${data.access_token}; path=/;`
+    console.log(document.cookie)
 }
 
 function handleUserData(data) {
     console.log(`${data.message}, ${data.HTTP_response}`)
     if (data.HTTP_response == 201){
         saveToken(data.token)
+        window.location.replace('/')
     }
 }
 
 
 function sendLoginData(e) {
     e.preventDefault()
-    var phone = document.getElementById('phone').value;
+    var phone = document.getElementById('country_code').value + document.getElementById('phone').value;
     var password = document.getElementById('password').value
     var first_name = document.getElementById('first_name').value;
     var last_name = document.getElementById('last_name').value
     var email = document.getElementById('email').value;
-    
-    document.body.style.background = 'yellow';
+    console.log(email + phone + first_name + last_name + password)
     $.ajax(
         {
             url: BASE_URL + '/api/auth/registration',
@@ -36,10 +37,10 @@ function sendLoginData(e) {
                 'email': email
             }),
             success: handleUserData,
-            error: (x) => console.log('ERROR'),
+            error: (x) => console.log(`ERROR: ${x}`),
 
         }
     )
 }
-
+console.log('wrtegwrseagfd')
 $('#sign_up').on('click', sendLoginData)

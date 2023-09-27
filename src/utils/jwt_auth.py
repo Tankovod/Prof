@@ -48,9 +48,17 @@ async def create_access_token(data: dict, expires_delta: timedelta | None = None
 async def token_check(token):
     try:
         payload = jwt.decode(token, Settings.SECRET_KEY, algorithms=[Settings.ALGORITHM])
-    except:
+    except Exception as ex:
         return status.HTTP_401_UNAUTHORIZED
     user_id = payload.get('sub')
     user_id = await get_user(user_id=user_id)
     if not user_id:
         return status.HTTP_401_UNAUTHORIZED
+
+
+async def get_user_id(token):
+    try:
+        payload = jwt.decode(token, Settings.SECRET_KEY, algorithms=[Settings.ALGORITHM])
+    except Exception as ex:
+        return status.HTTP_401_UNAUTHORIZED
+    return payload.get('sub')

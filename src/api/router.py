@@ -12,3 +12,5 @@ router = APIRouter(
 router.include_router(router=v1_router)
 router.include_router(router=auth_endpoint)
 
+
+
