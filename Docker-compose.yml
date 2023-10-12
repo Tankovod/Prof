@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+
+  app:
+    restart: always
+    build: .
+    command: sh -c "alembic revision --autogenerate && alembic upgrade head && uvicorn app:app --reload --host 0.0.0.0"
+    container_name: fastapi-app
+    ports:
+      - '8001:8000'
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-db:5432/postgres
+      - DATABASE_ASYNC_URL=postgresql+asyncpg://postgres:postgres@postgres-db:5432/postgres
+      - SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1320
+      - CELERY_RESULT_EXPIRES=10
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - SMTP_USER=smtp@gmail.com
+      - SMTP_PASS=qwerty123
+    logging:
+      options:
+        max-size: '15M'
+        max-file: '5'
+    depends_on:
+      - postgres
+      - redis
+      - celery-worker
+    volumes:
+      - .:/app
+
+
+  postgres:
+    image: postgres:15-alpine3.18
+    container_name: postgres-db
+    hostname: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: always
+
+  redis:
+    image: redis:7.0.4-alpine
+    container_name: redis-db
+    hostname: redis
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi-celery-worker
+    environment:
+      - DATABASE_ASYNC_URL=postgresql+asyncpg://postgres:postgres@postgres-db:5432/postgres
+      - SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1320
+      - REDIS_URL=redis://redis:6379/2
+      - CELERY_RESULT_EXPIRES=10
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - SMTP_USER=smtp@gmail.com
+      - SMTP_PASS=qwerty123
+    command: celery -A src.settings:celery worker -l INFO
+    restart: always
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+
+

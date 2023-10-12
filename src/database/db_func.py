@@ -1,7 +1,7 @@
 import asyncio
 
 from ulid import ulid
-from src.database.models import UserSite
+from src.database.models import UserSite, Product
 from sqlalchemy import select
 
 
@@ -15,9 +15,20 @@ async def get_user(phone: str = None, user_id: str = None) -> UserSite:
 
 async def post_user(validate_user):
     async with UserSite.async_session() as session:
-        async with session.begin():
-            user = UserSite(id=ulid(), **validate_user.model_dump())
-            session.add(user)
+        user = UserSite(id=ulid(), **validate_user.model_dump())
+        session.add(user)
 
 
-# asyncio.run(get_user('sdfgdsf'))
+async def select_emails() -> list[str]:
+    async with UserSite.async_session() as session:
+        result = await session.execute(select(UserSite.email))
+        return result.scalars()
+        # return session.scalars(select(UserSite.email))
+
+
+async def select_new_products() -> list:
+    async with Product.async_session() as session:
+        result = await session.execute(select(Product).filter(Product.is_new == True))
+        return result.scalars()
+        # return session.scalars(select(Product).filter(Product.is_new == True))
+

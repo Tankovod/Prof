@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Depends, status, HTTPException
 from starlette.responses import HTMLResponse
 from fastapi.responses import RedirectResponse
-from src.settings import templates, ACCESS_TOKEN_EXPIRE_MINUTES
+from src.settings import templates
 from src.utils.jwt_auth import authenticate_user, create_access_token, token_check
 
 

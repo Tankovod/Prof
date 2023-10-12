@@ -1,6 +1,6 @@
 import asyncio
 from logging.config import fileConfig
-from src.types_.settings import Settings
+from src.validation.settings import settings
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -41,7 +41,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option(Settings.DATABASE_URL)
+    url = settings.DATABASE_ASYNC_URL.unicode_string()
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -67,7 +67,8 @@ async def run_async_migrations() -> None:
     """
 
     connectable = async_engine_from_config(
-        config.get_section(config.config_ini_section, {}) | {'sqlalchemy.url': Settings.DATABASE_URL},
+        config.get_section(config.config_ini_section, {}) |
+        {'sqlalchemy.url': settings.DATABASE_ASYNC_URL.unicode_string()},
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

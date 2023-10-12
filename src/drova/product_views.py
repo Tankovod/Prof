@@ -1,14 +1,14 @@
 from functools import wraps
-
+from src.tasks import celery_newsletter
 from sqlalchemy import select
 
 from src.database.db_func import get_user
-from src.types_.types__ import ProductValid
+
 from src.utils.jwt_auth import token_check, get_user_id
-from fastapi import APIRouter, Request, Depends, Response, status
-from fastapi.responses import ORJSONResponse, RedirectResponse
+from fastapi import APIRouter, Request, status
+from fastapi.responses import RedirectResponse
 from starlette.responses import HTMLResponse
-from src.database.models import Product, UserSite
+from src.database.models import Product
 from src.settings import templates
 
 router = APIRouter(
@@ -50,9 +50,12 @@ async def get_user_profile(request: Request):
 
 @router.get("/")
 async def get_home(request: Request):
+    d = celery_newsletter.delay()
+    print(d, 100000000000)
     is_auth = False
-    if 'access_token' in request.cookies: is_auth = True
+    if 'access_token' in request.cookies:
+        is_auth = True
     async with Product.async_session() as session:
         products = await session.scalars(select(Product))
-    return templates.TemplateResponse('main/home.html', context={"request": request, "products": products,
+    return templates.TemplateResponse('main/index.html', context={"request": request, "products": products,
                                                                  "is_auth": is_auth})
