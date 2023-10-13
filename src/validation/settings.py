@@ -5,12 +5,12 @@ from os import getenv
 
 class Settings(BaseSettings):
     DATABASE_ASYNC_URL: PostgresDsn
-    SECRET_KEY: SecretStr  # = getenv('SECRET_KEY')
-    ALGORITHM: str  # = getenv('ALGORITHM')
-    CELERY_BROKER_URL: RedisDsn  # = getenv('CELERY_BROKER_URL')
-    CELERY_RESULT_BACKEND: RedisDsn  # = getenv('CELERY_RESULT_BACKEND')
+    SECRET_KEY: SecretStr
+    ALGORITHM: str
+    CELERY_BROKER_URL: RedisDsn
+    CELERY_RESULT_BACKEND: RedisDsn
     REDIS_URL: RedisDsn = Field(default='redis://redis:6379/2')
-    CELERY_RESULT_EXPIRES: int  # = getenv('CELERY_RESULT_EXPIRES')
+    CELERY_RESULT_EXPIRES: int
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
 

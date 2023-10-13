@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from starlette.responses import HTMLResponse
-from .product_views import router as product_router
-from .auth_views import router as auth_router
+from src.drova.product.product_views import router as product_router
+from src.drova.auth.auth_views import router as auth_router
 
 router = APIRouter(
     default_response_class=HTMLResponse,

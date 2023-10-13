@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from fastapi.responses import ORJSONResponse
 
-from .v1.router import router as v1_router
-from .auth.endpoints import router as auth_endpoint
+from .v1.endpoints import router as v1_router
+from .auth.endpoints import router as auth_router
 
 
 router = APIRouter(
@@ -10,7 +10,7 @@ router = APIRouter(
     default_response_class=ORJSONResponse
 )
 router.include_router(router=v1_router)
-router.include_router(router=auth_endpoint)
+router.include_router(router=auth_router)
 
 
 

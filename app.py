@@ -35,3 +35,4 @@ class UnitAdmin(ModelView, model=ProductUnit):
 admin.add_view(UserAdmin)
 admin.add_view(ProductAdmin)
 admin.add_view(UnitAdmin)
+# ----------   SQLAdmin ----------------

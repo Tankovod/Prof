@@ -16,7 +16,7 @@
                         <li><a class="dropdown-item" href="#!">Новые поступления</a></li>
                     </ul>
                 </li>
-                {% if is_auth %}
+                {% if user %}
                     <li class="nav-item"><a class="nav-link" href="/profile">Мой профиль</a></li>
                     <li class="nav-item"><a class="nav-link" href="#!" id="logout">Выйти</a></li>
                 {% else %}

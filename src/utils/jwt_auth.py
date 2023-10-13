@@ -1,9 +1,13 @@
 from datetime import datetime, timedelta
+from typing import Literal, Optional, Union
+
 from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 from src.database.db_func import get_user
+from src.database.models import UserSite
 from src.settings import pwd_context
 from src.validation.settings import settings
+from src.validation.user_validators import UserView
 
 
 async def get_password_hash(password):
@@ -36,16 +40,19 @@ async def create_access_token(data: dict, expires_delta: timedelta | None = None
     return access_token
 
 
-async def token_check(token):
+async def token_check(token: str) -> Union[status.HTTP_401_UNAUTHORIZED, UserView]:
     try:
         payload = jwt.decode(token, settings.SECRET_KEY.get_secret_value(),
                              algorithms=[settings.ALGORITHM])
     except Exception as ex:
         return status.HTTP_401_UNAUTHORIZED
     user_id = payload.get('sub')
-    user_id = await get_user(user_id=user_id)
-    if not user_id:
+    user = await get_user(user_id=user_id)
+    if not user:
         return status.HTTP_401_UNAUTHORIZED
+    user = user.__dict__
+    user.pop("_sa_instance_state")
+    return UserView(**user)
 
 
 async def get_user_id(token):

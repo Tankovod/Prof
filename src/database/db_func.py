@@ -22,13 +22,13 @@ async def post_user(validate_user):
 async def select_emails() -> list[str]:
     async with UserSite.async_session() as session:
         result = await session.execute(select(UserSite.email))
-        return result.scalars()
+        return [*result.scalars()]
         # return session.scalars(select(UserSite.email))
 
 
 async def select_new_products() -> list:
     async with Product.async_session() as session:
         result = await session.execute(select(Product).filter(Product.is_new == True))
-        return result.scalars()
+        return [*result.scalars()]
         # return session.scalars(select(Product).filter(Product.is_new == True))
 
