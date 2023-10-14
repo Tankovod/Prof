@@ -26,7 +26,7 @@ async def select_emails() -> list[str]:
         # return session.scalars(select(UserSite.email))
 
 
-async def select_new_products() -> list:
+async def select_new_products() -> list[Product]:
     async with Product.async_session() as session:
         result = await session.execute(select(Product).filter(Product.is_new == True))
         return [*result.scalars()]

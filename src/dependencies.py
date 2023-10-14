@@ -1,6 +1,7 @@
 from typing import Union, Optional
 
-from fastapi import Depends, HTTPException, status, Cookie, Request
+from fastapi import Depends, HTTPException, status, Cookie, Request, Path
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing_extensions import Annotated
 from fastapi.responses import RedirectResponse
@@ -9,7 +10,7 @@ from src.database.base import Base
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 from src.database.db_func import get_user
-from src.database.models import UserSite
+from src.database.models import UserSite, Product
 from src.utils.jwt_auth import token_check
 from src.validation.user_validators import User, UserView
 from src.validation.token_validators import TokenData
@@ -53,10 +54,9 @@ from src.validation.settings import settings
 #     return current_user
 
 
-async def _is_user_authorized(request: Request) -> Union[None, UserView]:  # для страниц, которые доступны всем пользователям
+async def _is_user_authorized(request: Request) -> Union[None, UserView]:  # для страниц, которые доступны всем
     if not 'access_token' in request.cookies:
         return
-    print(request.cookies['access_token'])
     user_or_none = await token_check(token=request.cookies['access_token'])
     if not user_or_none:
         return
@@ -81,6 +81,15 @@ async def _user_auth_views(access_token: str = Cookie(...)) -> Union[status.HTTP
     return user_or_401
 
 
+async def _get_product_info(slug: int = Path(default=..., gt=1, examples=[1, 2, 3])):
+    with Product.async_session() as session:
+        product = await session.execute(select(Product).filter(Product.slug == slug))
+        if not Product:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product was not found")
+        return [*product.scalar()]
+
+
+get_product_info = Depends(_get_product_info)
 is_user_authorized = Depends(_is_user_authorized)
 user_auth_views = Depends(_user_auth_views)
 user_auth_api = Depends(_user_auth_api)

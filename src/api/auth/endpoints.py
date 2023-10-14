@@ -14,7 +14,6 @@ from src.utils.jwt_auth import create_access_token, verify_password
 
 @router.post(path="/registration",
              status_code=status.HTTP_201_CREATED,
-             response_model_exclude={'password'},
              name="New user sign up")
 async def sign_up(form: User) -> ORJSONResponse:
     user = UserSite(**form.model_dump())
@@ -39,7 +38,9 @@ async def sign_up(form: User) -> ORJSONResponse:
         exclude={"password", "disabled"})}, status_code=status_code)
 
 
-@router.post(path="/login")
+@router.post(path="/login",
+             status_code=status.HTTP_200_OK,
+             name="user sign in")
 async def sign_in(form: LoginData) -> ORJSONResponse:
     current_user = await get_user(phone=form.phone)
     if current_user and await verify_password(plain_password=form.password, hashed_password=current_user.password):
@@ -51,6 +52,6 @@ async def sign_in(form: LoginData) -> ORJSONResponse:
                               status_code=status.HTTP_400_BAD_REQUEST)
 
 
-@router.post(path="/token")
+@router.post(path="/token", status_code=status.HTTP_200_OK, name="token validation")
 async def validate_token(token: dict) -> None | int:
     return await token_check(token=token['access_token'].split('=')[1])

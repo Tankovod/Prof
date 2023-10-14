@@ -50,10 +50,11 @@ function send_product() {
     var title = document.getElementById('title').value
     var description = document.getElementById('description').value;
     var amount = document.getElementById('amount').value
-    var units = document.getElementById('units').value;
+    var units = document.getElementById('unit_list').value;
+    console.log(units)
     $.ajax(
         {
-            url: BASE_URL + '/api/v1/add_product',
+            url: BASE_URL + '/api/v1/add-product',
             method: 'post',
             dataType: 'json',
             contentType: 'application/json',
@@ -61,7 +62,7 @@ function send_product() {
                 'title': title,
                 'description': description,
                 'amount': amount,
-                'units': units
+                'unit_id': units
             }),
             success: console.log('success'),
             error: (x) => console.log(`Error: ${x}`),

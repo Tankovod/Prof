@@ -20,6 +20,7 @@ class Product(Base):
     __tablename__ = "product"
 
     title = Column(VARCHAR(64), unique=True, nullable=False, doc='Заголовок')
+    slug = Column(VARCHAR(64), nullable=False, unique=True)
     description = Column(TEXT, unique=False, nullable=True, doc='Описание')
     amount = Column(INT, unique=False, nullable=False, doc='Количество')
     unit_id = Column(ForeignKey("product_unit.id", ondelete="RESTRICT"), doc='Единица измерения')  # Единицы измерения

@@ -26,6 +26,5 @@ class UserInDB(User):
 
 
 class UserView(User):
-    password: str = None
     id: str = Field(..., min_length=26, max_length=26)
 

@@ -7,11 +7,11 @@ function saveToken(data){
 }
 
 function handleUserData(data) {
-    console.log(`${data.message}, ${data.HTTP_response}`)
-    if (data.HTTP_response == 201){
+    console.log(`${data.message}`)
+//    if ('зарегистрированы' in data.message){
         saveToken(data.token)
         window.location.replace('/')
-    }
+//    }
 }
 
 

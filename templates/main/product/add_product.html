@@ -1,17 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% for item in product %}
-        <input placeholder="{{ item[1] }}" id="{{ item[0] }}"><br>
-    {% endfor %}
-    <button id="add_product">Сохранить</button>
+{% extends 'main/base.html' %}
 
-    <button id="logout">Выйти из профиля</button>
+{% block title %}Добавление товара{% endblock %}
+
+{% block content %}
+
+<!-- Navigation-->
+{% include 'main/page_parts/navigation.html' %}
+
+
+<!-- Section-->
+    <style>
+        .form-control{
+            width: 70%;
+            margin: 20px 10% 0 10%;
+        }
+        .mb-2{
+            width: 70%;
+            margin: 20px 10% 0 10%;
+        }
+    </style>
+    {% for item in product %}
+        <div class="form-group">
+            <input placeholder="{{ item[1] }}" id="{{ item[0] }}" class="form-control"  >
+        </div>
+    {% endfor %}
+    <select id="unit_list" class="form-control">
+        {% for unit in units%}
+            <option value="{{unit.id}}">{{unit.name}}</option>
+        {% endfor %}
+    </select>
+    <button id="add_product" class="btn btn-primary mb-2">Добавить</button>
+
     <script type="text/javascript"  charset="utf-8" src="../../../static/js/is_auth.js"></script>
-</body>
-</html>
+
+<!-- Page Footer-->
+{% include 'main/page_parts/footer.html' %}
+
+{% endblock %}

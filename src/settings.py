@@ -14,7 +14,7 @@ celery.autodiscover_tasks(packages=['src'])
 celery.conf.beat_schedule = {
     'newsletter_every_7_days': {
         'task': 'src.tasks.celery_newsletter',
-        'schedule': 604800.0
+        'schedule': 500.0  # 604800.0
     }
 }
 # celery.conf.timezone = 'UTC'
