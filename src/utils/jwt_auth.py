@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from typing import Literal, Optional, Union
+from typing import Union
 
-from fastapi import Depends, HTTPException, status
-from jose import JWTError, jwt
+from fastapi import status
+from jose import jwt
+
 from src.database.db_func import get_user
-from src.database.models import UserSite
 from src.settings import pwd_context
 from src.validation.settings import settings
 from src.validation.user_validators import UserView

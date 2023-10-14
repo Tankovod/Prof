@@ -1,6 +1,5 @@
 const BASE_URL = 'http://127.0.0.1:8001'
 function saveToken(data){
-    // localStorage.setItem('access_token', JSON.stringify(data))
 
     document.cookie=`access_token=${data.access_token}; path=/;`
 }

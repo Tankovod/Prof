@@ -14,7 +14,7 @@ def celery_newsletter() -> None:
             emails = await select_emails()
             for email in emails:
                 template = await make_email_template(target_email=email, new_products=products)
-                # await send_template(template=template)
+                await send_template(template=template)
             for product in products:  # products are shown
                 product.is_new = False
             async with Product.async_session() as session:  # update new products

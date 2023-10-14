@@ -1,12 +1,12 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from sqladmin import Admin, ModelView
+
 from src.api.router import router as api_router
 from src.database.base import Base
+from src.database.models import UserSite, Product, ProductUnit
 from src.drova.router import router as views_router
-from fastapi.middleware.cors import CORSMiddleware
-from sqladmin import Admin, ModelView
-from src.database.models import UserSite, Product, ProductUnit, ProductImage
-
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware,

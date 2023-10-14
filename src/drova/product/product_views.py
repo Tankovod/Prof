@@ -1,17 +1,11 @@
-from functools import wraps
-
-from fastapi import Request, status
-from fastapi.responses import RedirectResponse
+from fastapi import Request
 from sqlalchemy import select
 
 from src.database.models import Product, ProductUnit
 from src.dependencies import is_user_authorized, user_auth_views
 from src.settings import templates
-from src.tasks import celery_newsletter
-from src.utils.jwt_auth import token_check
 from src.validation.user_validators import UserView
 from .router import router
-from ...database.base import Base
 
 
 async def get_table_columns(table_model, table_name: str, exclude: list[str]) -> list[tuple[str, str]]:
@@ -37,8 +31,6 @@ async def get_user_profile(request: Request, user: UserView = user_auth_views):
 
 @router.get("/")
 async def get_home(request: Request, user: UserView | None = is_user_authorized):
-    d = celery_newsletter.delay()
-
     async with Product.async_session() as session:
         products = await session.scalars(select(Product))
     return templates.TemplateResponse('main/index.html', context={"request": request, "products": products,

@@ -1,6 +1,5 @@
-from pydantic import SecretStr, PostgresDsn, RedisDsn, Field, EmailStr
+from pydantic import SecretStr, PostgresDsn, RedisDsn, Field
 from pydantic_settings import BaseSettings
-from os import getenv
 
 
 class Settings(BaseSettings):

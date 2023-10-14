@@ -1,6 +1,5 @@
 import ulid
 from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
 from .custom_validators import PasswordStr
 
 
