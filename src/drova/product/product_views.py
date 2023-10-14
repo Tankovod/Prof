@@ -14,19 +14,6 @@ from .router import router
 from ...database.base import Base
 
 
-def auth_required(func):
-    @wraps(func)
-    async def wrapper(request: Request):
-        if 'access_token' in request.cookies:
-            if await token_check(request.cookies['access_token']) == status.HTTP_401_UNAUTHORIZED:
-                return RedirectResponse("/auth/login", status_code=status.HTTP_401_UNAUTHORIZED)
-            return await func(request)
-        else:
-            return RedirectResponse("/auth/login")
-
-    return wrapper
-
-
 async def get_table_columns(table_model, table_name: str, exclude: list[str]) -> list[tuple[str, str]]:
     return [(i.name, i.doc) for i in [*table_model.metadata.tables.get(table_name).columns] if
             i.name not in exclude]
