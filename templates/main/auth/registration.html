@@ -1,40 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>-->
-<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="../../../static/css/login_style.css" rel="stylesheet" type="text/css">
-   <meta charset="UTF-8">
-    <title>Регистрация</title>
-</head>
-<body>
+{% extends 'main/auth/base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
 <!-- Navbar-->
-<header class="header">
-  <nav class="navbar navbar-expand-lg navbar-light py-3">
-    <div class="container">
-      <!-- Navbar Brand -->
-      <a href="#" class="navbar-brand">
-        <img src="https://bootstrapious.com/i/snippets/sn-registeration/logo.svg" alt="logo" width="150">
-      </a>
-    </div>
-  </nav>
-</header>
+{% include 'main/auth/auth_parts/navbar.html' %}
 
 
 <div class="container">
   <div class="row py-5 mt-4 align-items-center">
     <!-- For Demo Purpose -->
-    <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
-      <img src="https://bootstrapious.com/i/snippets/sn-registeration/illustration.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
-      <h1>Create an Account</h1>
-      <p class="font-italic text-muted mb-0">Create a minimal registeration page using Bootstrap 4 HTML form elements.</p>
-      <p class="font-italic text-muted">Snippet By <a href="https://bootstrapious.com" class="text-muted">
-          <u>Bootstrapious</u></a>
-      </p>
-    </div>
+    {% include 'main/auth/auth_parts/demo.html' %}
 
     <!-- Registeration Form -->
     <div class="col-md-7 col-lg-6 ml-auto">
@@ -143,19 +120,4 @@
   </div>
 </div>
 
-
-
-<script type="text/javascript"  charset="utf-8" src="../../../static/js/auth_sign_up.js"></script>
-<script>
-$(function () {
-    $('input, select').on('focus', function () {
-        $(this).parent().find('.input-group-text').css('border-color', '#80bdff');
-    });
-    $('input, select').on('blur', function () {
-        $(this).parent().find('.input-group-text').css('border-color', '#ced4da');
-    });
-});
-
-</script>
-</body>
-</html>
+{% endblock %}

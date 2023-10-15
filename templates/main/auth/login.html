@@ -1,45 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>-->
-<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link href="../../../static/css/bs_style.css" rel="stylesheet" />
-  <link href="../../../static/css/login_style.css" rel="stylesheet" type="text/css">
-<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>-->
+{% extends 'main/auth/base.html' %}
 
-   <meta charset="UTF-8">
-    <title>Вход в аккаунт</title>
-</head>
-<body>
+{% block title %}Войти на сайт{% endblock %}
+
+{% block content %}
 
 <!-- Navbar-->
-<header class="header">
-  <nav class="navbar navbar-expand-lg navbar-light py-3">
-    <div class="container">
-      <!-- Navbar Brand -->
-      <a href="#" class="navbar-brand">
-        <img src="https://img.freepik.com/premium-vector/logo-for-a-surfboard-company-that-has-a-surfboard-on-the-top-of-it_695276-3044.jpg?w=740" alt="logo" width="150" height="120">
-      </a>
-    </div>
-  </nav>
-</header>
+{% include 'main/auth/auth_parts/navbar.html' %}
 
 <div class="container">
   <div class="row py-5 mt-4 align-items-center">
     <!-- For Demo Purpose -->
-    <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
-      <img src="https://bootstrapious.com/i/snippets/sn-registeration/illustration.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
-      <h1>Вход в аккаунт</h1>
-      <p class="font-italic text-muted mb-0">Приобретите парочку классных товаров по доступной цене</p>
-      <p class="font-italic text-muted">или же... <a href="/" class="text-muted">
-          <u>Я еще не определился</u></a>
-      </p>
-    </div>
 
+    {% include 'main/auth/auth_parts/demo.html' %}
     <!-- Login Form -->
     <div class="col-md-7 col-lg-6 ml-auto">
       <form action="#">
@@ -111,18 +83,4 @@
   </div>
 </div>
 
-<script type="text/javascript"  charset="utf-8" src="../../../static/js/auth_sign_in.js"></script>
-<script>
-$(function () {
-    $('input, select').on('focus', function () {
-        $(this).parent().find('.input-group-text').css('border-color', '#80bdff');
-    });
-    $('input, select').on('blur', function () {
-        $(this).parent().find('.input-group-text').css('border-color', '#ced4da');
-    });
-});
-
-</script>
-</body>
-
-</html>
+{% endblock %}

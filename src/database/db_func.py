@@ -1,5 +1,3 @@
-import asyncio
-
 from ulid import ulid
 from src.database.models import UserSite, Product
 from sqlalchemy import select

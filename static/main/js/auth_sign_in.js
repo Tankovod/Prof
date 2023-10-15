@@ -34,7 +34,6 @@ function sendLoginData(e) {
     e.preventDefault()
     var phone = document.getElementById('country_code').value + document.getElementById('phone').value;
     var password = document.getElementById('password').value
-    console.log(phone + '  ' + password)
     $.ajax(
         {
             url: BASE_URL + '/api/auth/login',
@@ -59,13 +58,6 @@ function handleTokenResponse(data){
         deleteAllCookies()
     }
 }
-
-// function showWarningMessage(data) {
-//     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-//     var toastList = toastElList.map(function (toastEl) {
-//         return new bootstrap.Toast(toastEl, 'show')
-// })
-// }
 
 function isUserAuth () {
     console.log(document.cookie)

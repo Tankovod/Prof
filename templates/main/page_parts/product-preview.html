@@ -1,9 +1,9 @@
 <div class="col mb-5">
     <div class="card h-100">
         <!-- Sale badge-->
-        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">{{product.amount}} {{product.units}}</div>
+        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">{{product.amount}}</div>
         <!-- Product image-->
-        <img class="card-img-top" src="https://sportishka.com/uploads/posts/2022-11/1667530948_54-sportishka-com-p-samaya-sovremennaya-mashina-v-mire-instagr-56.jpg" alt="..." />
+        <img class="card-img-top" src="{{ product.images[0] }}" alt="..." />
         <!-- Product details-->
         <div class="card-body p-4">
             <div class="text-center">
@@ -24,7 +24,7 @@
         </div>
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
             <!-- Product actions-->
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">В корзину</a></div>
+<!--            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">В корзину</a></div>-->
         </div>
     </div>
 </div>

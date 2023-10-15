@@ -2,7 +2,6 @@ const BASE_URL = 'http://127.0.0.1:8001'
 
 function saveToken(data){
     document.cookie=`access_token=${data.access_token}; path=/;`
-    console.log(document.cookie)
 }
 
 function handleUserData(data) {
@@ -39,5 +38,5 @@ function sendLoginData(e) {
         }
     )
 }
-console.log('wrtegwrseagfd')
+
 $('#sign_up').on('click', sendLoginData)

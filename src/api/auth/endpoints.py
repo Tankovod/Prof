@@ -40,7 +40,7 @@ async def sign_up(form: User) -> ORJSONResponse:
 
 @router.post(path="/login",
              status_code=status.HTTP_200_OK,
-             name="user sign in")
+             name="User sign in")
 async def sign_in(form: LoginData) -> ORJSONResponse:
     current_user = await get_user(phone=form.phone)
     if current_user and await verify_password(plain_password=form.password, hashed_password=current_user.password):

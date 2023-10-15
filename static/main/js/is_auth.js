@@ -23,7 +23,6 @@ function send_product() {
     var description = document.getElementById('description').value;
     var amount = document.getElementById('amount').value
     var units = document.getElementById('unit_list').value;
-    console.log(units)
     $.ajax(
         {
             url: BASE_URL + '/api/v1/add-product',
@@ -41,6 +40,5 @@ function send_product() {
         }
     )
 }
-console.log(1231232)
 $('#add_product').on('click', send_product)
 $('#logout').on('click', logOut)
