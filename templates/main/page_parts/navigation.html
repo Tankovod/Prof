@@ -16,8 +16,8 @@
 <!--                        <li><a class="dropdown-item" href="#!">Новые поступления</a></li>-->
 <!--                    </ul>-->
 <!--                </li>-->
-                {% if user %}
-                    <li class="nav-item"><a class="nav-link" href="/profile">Добавить товар</a></li>
+                {% if user != 401 %}
+                    <li class="nav-item"><a class="nav-link" href="/add-product">Добавить товар</a></li>
                     <li class="nav-item"><a class="nav-link" href="/profile">Мой профиль</a></li>
                     <li class="nav-item"><a class="nav-link" href="#!" id="logout">Выйти</a></li>
                 {% else %}

@@ -1,4 +1,6 @@
-from sqlalchemy.orm import relationship
+from typing import List
+
+from sqlalchemy.orm import relationship, Mapped
 
 from .base import Base
 from sqlalchemy import Column, VARCHAR, BOOLEAN, TIMESTAMP, INT, TEXT, ForeignKey
@@ -24,8 +26,9 @@ class Product(Base):
     description = Column(TEXT, unique=False, nullable=True, doc='Описание')
     amount = Column(INT, unique=False, nullable=False, doc='Количество')
     unit_id = Column(ForeignKey("product_unit.id", ondelete="RESTRICT"), doc='Единица измерения')  # Единицы измерения
+    units = relationship(argument="ProductUnit", lazy="select", back_populates="products")
     actual_date = Column(TIMESTAMP, unique=False, nullable=False, doc='Актупально на дату')
-    images = relationship("ProductImage", backref="Product")
+    images = relationship(argument="ProductImage", lazy="select", back_populates="products")
     is_new = Column(BOOLEAN, nullable=False)
 
 
@@ -33,7 +36,7 @@ class ProductUnit(Base):
     __tablename__ = "product_unit"
 
     name = Column(VARCHAR(32), nullable=False, unique=True)
-    products = relationship("Product", backref="ProductUnit")
+    products = relationship(argument="Product", lazy="select", back_populates="units")
 
 
 class ProductImage(Base):
@@ -41,5 +44,6 @@ class ProductImage(Base):
 
     image_link = Column(VARCHAR(254), unique=False, nullable=True, default="")
     product_id = Column(INT, ForeignKey("product.id", ondelete="CASCADE"))
+    products = relationship(argument="Product", lazy="select", back_populates="images")
 
 

@@ -5,7 +5,7 @@ from sqladmin import Admin, ModelView
 
 from src.api.router import router as api_router
 from src.database.base import Base
-from src.database.models import UserSite, Product, ProductUnit
+from src.database.models import UserSite, Product, ProductUnit, ProductImage
 from src.drova.router import router as views_router
 
 app = FastAPI()
@@ -32,7 +32,12 @@ class UnitAdmin(ModelView, model=ProductUnit):
     column_list = [ProductUnit.name, ProductUnit.products]
 
 
+class ProductImageAdmin(ModelView, model=ProductImage):
+    column_list = [ProductImage.image_link, ProductImage.product_id]
+
+
 admin.add_view(UserAdmin)
 admin.add_view(ProductAdmin)
 admin.add_view(UnitAdmin)
+admin.add_view(ProductImageAdmin)
 # ----------   SQLAdmin ----------------

@@ -8,8 +8,7 @@ from .router import router
 
 async def dont_show_auth(request: Request):
     if 'access_token' in request.cookies:
-        if await token_check(request.cookies['access_token']) == status.HTTP_401_UNAUTHORIZED:
-            return status.HTTP_401_UNAUTHORIZED
+        return await token_check(request.cookies['access_token'])
     else:
         return status.HTTP_401_UNAUTHORIZED
 

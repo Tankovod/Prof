@@ -1,9 +1,11 @@
 from datetime import timedelta
+from typing import Union
+
 from fastapi.responses import ORJSONResponse
 from .router import router
 from src.validation.settings import settings
 import sqlalchemy.exc
-from fastapi import status
+from fastapi import status, HTTPException
 from src.database.db_func import get_user
 from src.utils.jwt_auth import get_password_hash, token_check
 from src.database.models import UserSite
@@ -24,18 +26,17 @@ async def sign_up(form: User) -> ORJSONResponse:
                 session.add(user)
                 session.commit()
 
-    except sqlalchemy.exc.IntegrityError as ex:
-        message = 'Данный email или номер телефона уже зарегистрированы'
-        token, status_code = '', status.HTTP_401_UNAUTHORIZED
+    except sqlalchemy.exc.IntegrityError:
+        message = 'Email or telephone number are already exist'
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=message)
 
     else:
-        message = "Вы зарегистрированы!"
+        message = "Success. Registration completed"
         token = await create_access_token(data={"sub": form.id},
                                           expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
-        status_code = status.HTTP_201_CREATED
 
     return ORJSONResponse(content={'message': message, 'token': token, **form.model_dump(
-        exclude={"password", "disabled"})}, status_code=status_code)
+        exclude={"password", "disabled"})}, status_code=status.HTTP_201_CREATED)
 
 
 @router.post(path="/login",
@@ -48,8 +49,7 @@ async def sign_in(form: LoginData) -> ORJSONResponse:
                                           expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
         return ORJSONResponse(content={'token': token}, status_code=status.HTTP_200_OK)
     else:
-        return ORJSONResponse(content={'message': 'Неверный логин и(или) пароль'},
-                              status_code=status.HTTP_400_BAD_REQUEST)
+        raise HTTPException(detail='Wrong phone or (and) password', status_code=status.HTTP_400_BAD_REQUEST)
 
 
 @router.post(path="/token", status_code=status.HTTP_200_OK, name="token validation")
