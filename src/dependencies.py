@@ -4,9 +4,15 @@ from fastapi import Depends, HTTPException, status, Cookie, Request, Path
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 
+from src.database.base import Base
 from src.database.models import Product
 from src.utils.jwt_auth import token_check
 from src.validation.user_validators import UserView
+
+
+async def _get_session():
+    async with Base.async_session() as session:
+        yield session
 
 
 async def _is_user_authorized(request: Request) -> Union[None, UserView]:  # для страниц, которые доступны всем
@@ -15,15 +21,10 @@ async def _is_user_authorized(request: Request) -> Union[None, UserView]:  # д�
     return await token_check(token=request.cookies['access_token'])
 
 
-async def _user_auth_api(access_token: str = Cookie(...)) -> UserView:  # для api
+async def _user_auth(access_token: str = Cookie(...)) -> Union[UserView, status.HTTP_401_UNAUTHORIZED]:  # для views
     user_or_401 = await token_check(token=access_token)
     if user_or_401 == status.HTTP_401_UNAUTHORIZED:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    return user_or_401
-
-
-async def _user_auth_views(access_token: str = Cookie(...)) -> Union[UserView, status.HTTP_401_UNAUTHORIZED]:  # для views
-    user_or_401 = await token_check(token=access_token)
     return user_or_401
 
 
@@ -39,6 +40,5 @@ async def _get_product_info(slug: str = Path(default=..., min_length=3, max_leng
 
 get_product_info = Depends(_get_product_info)
 is_user_authorized = Depends(_is_user_authorized)
-user_auth_views = Depends(_user_auth_views)
-user_auth_api = Depends(_user_auth_api)
-
+user_auth = Depends(_user_auth)
+get_session = Depends(_get_session)

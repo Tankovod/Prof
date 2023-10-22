@@ -8,7 +8,7 @@ from src.validation.product_validators import ProductValid, ProductModelDb
 from .router import router
 from src.database.models import Product, ProductImage
 from sqlalchemy.exc import IntegrityError
-from src.dependencies import user_auth_api, get_product_info
+from src.dependencies import user_auth, get_product_info
 from ...validation.user_validators import UserView
 
 
@@ -17,7 +17,14 @@ from ...validation.user_validators import UserView
              status_code=status.HTTP_201_CREATED,
              response_model=ProductValid
              )
-async def add_product(form: ProductValid, user: UserView = user_auth_api) -> ProductValid:
+async def add_product(form: ProductValid, user: UserView = user_auth) -> ProductValid:
+    """
+    Create new product in db
+
+    :param form: User new product form from template
+    :param user: is user authenticated
+    :return: form
+    """
     async with Product.async_session() as session:
         async with session.begin():
             product = Product(**form.model_dump(exclude={"images"}), images=[
@@ -36,6 +43,11 @@ async def add_product(form: ProductValid, user: UserView = user_auth_api) -> Pro
             status_code=status.HTTP_200_OK,
             response_model=list[ProductValid])
 async def get_all_products() -> list[ProductModelDb]:
+    """
+    Get all products from db
+
+    :return: list of all Product db models include dependent Unit and Image models
+    """
     async with Product.async_session() as session:
         products = await session.scalars(select(Product).options(selectinload(Product.images), selectinload(Product.units)))
     return [ProductModelDb.model_validate(obj=product, from_attributes=True) for product in products]
@@ -46,4 +58,10 @@ async def get_all_products() -> list[ProductModelDb]:
             status_code=status.HTTP_200_OK,
             response_model=ProductValid)
 async def get_product_info(product: Product = get_product_info) -> ProductValid:
+    """
+    Get all params of existing product by its slug
+
+    :param product: Product db model
+    :return: Product model after validation
+    """
     return ProductValid.model_validate(obj=product, from_attributes=True)
